@@ -1,101 +1,73 @@
 import 'dart:async';
+import 'package:login_learn/providers/login_service_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  StreamController<String> _emailController = BehaviorSubject();
-  StreamController<String> _passwordController = BehaviorSubject();
-
-  final _validateEmail =
-      StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
-    if (RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$").hasMatch(email)) {
-      sink.add(email);
-    } else {
-      sink.addError("Email non valida");
-    }
-  });
-  final _validatePassword = StreamTransformer<String, String>.fromHandlers(
-      handleData: (password, sink) {
-    if (password.length >= 6) {
-      sink.add(password);
-    } else {
-      sink.addError("Password troppo corta");
-    }
-  });
-
-  @override
-  void dispose() {
-    _emailController.close();
-    _passwordController.close();
-    super.dispose();
-  }
-
+class LoginPage extends StatelessWidget{
+   //Struttura della app
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(title: Text("Login"),),
         body: Column(
           children: [
-            _email(),
-            _password(),
-            _loginButton(),
+            _email(context),
+            _password(context),
+            _loginButton(context),
           ],
         ));
   }
 
-  Widget _email() => StreamBuilder<String>(
-        stream: _emailStream,
+  //Uso dei metodi "staccati" in modo sia facile refactor modifica e comprensione di cosa fa cosa
+
+  Widget _email(BuildContext context) =>
+      StreamBuilder<String>(
+        stream: LoginServiceProvider.of(context).loginService.emailStream,
         builder: (context, snapshot) {
           return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: TextField(
-                onChanged: _emailController.sink.add,
+                onChanged: LoginServiceProvider.of(context).loginService.changeEmail,
                 decoration: InputDecoration(
                   hintText: "Email",
                   labelText: "Email",
-                  errorText: snapshot.hasError ? snapshot.error.toString() : null,
+                  //ho dovuto inventarmi sta cosa
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
                 ),
                 keyboardType: TextInputType.emailAddress,
               ));
         },
       );
 
-  Widget _password() => StreamBuilder(
-      stream: _passwordStream,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            onChanged: _passwordController.sink.add,
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: "Password",
-              labelText: "Password",
-              errorText: snapshot.hasError ? snapshot.error.toString() : null,
-            ),
-          ),
-        );
-      });
+  Widget _password(BuildContext context) =>
+      StreamBuilder(
+          stream: LoginServiceProvider.of(context).loginService.passwordStream,
+          builder: (context, snapshot) {
+            return Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextField(
+                onChanged: LoginServiceProvider.of(context).loginService.changePassword,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: "Password",
+                  labelText: "Password",
+                  errorText: snapshot.hasError
+                      ? snapshot.error.toString()
+                      : null,
+                ),
+              ),
+            );
+          });
 
-  Stream<String> get _emailStream =>
-      _emailController.stream.transform(_validateEmail);
+  Widget _loginButton(BuildContext context) =>
+      StreamBuilder(
+          stream: LoginServiceProvider.of(context).loginService.loginButtonStream,
+          builder: (context, snapshot) {
+            return TextButton(
+                onPressed: snapshot.data == true ? () {} : null,
+                child: Text("Login"));
+          });
 
-  Stream<String> get _passwordStream =>
-      _passwordController.stream.transform(_validatePassword);
 
-  Stream<bool> get _loginButtonStream =>
-      Rx.combineLatest2(_emailStream, _passwordStream, (a, b) => true);
-
-  Widget _loginButton() => StreamBuilder(
-      stream: _loginButtonStream,
-      builder: (context, snapshot) {
-        return TextButton(
-            onPressed: snapshot.data == true ? () {} : null,
-            child: Text("Login"));
-      });
 }
