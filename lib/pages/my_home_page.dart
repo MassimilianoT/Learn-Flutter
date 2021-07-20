@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:login_learn/providers/login_service_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_learn/blocs/form_bloc.dart' as B;
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
@@ -9,65 +10,52 @@ class LoginPage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Login"),),
-        body: Column(
-          children: [
-            _email(context),
-            _password(context),
-            _loginButton(context),
-          ],
+        body: BlocBuilder<B.FormBloc, B.FormState>(
+          builder: (BuildContext context, state) => Column(
+            children: [
+              _email(context, state),
+              _password(context, state),
+              _loginButton(context, state),
+            ],
+          ),
         ));
   }
 
   //Uso dei metodi "staccati" in modo sia facile refactor modifica e comprensione di cosa fa cosa
 
-  Widget _email(BuildContext context) =>
-      StreamBuilder<String>(
-        stream: LoginServiceProvider.of(context).loginService.emailStream,
-        builder: (context, snapshot) {
-          return Padding(
+  Widget _email(BuildContext context, B.FormState state) =>
+      Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextField(
-                onChanged: LoginServiceProvider.of(context).loginService.changeEmail,
+                onChanged: context.watch<B.FormBloc>().changeEmail,
                 decoration: InputDecoration(
                   hintText: "Email",
                   labelText: "Email",
                   //ho dovuto inventarmi sta cosa
                   errorText:
-                  snapshot.hasError ? snapshot.error.toString() : null,
+                  !state.validEmail ? 'Email non valida' : null,
                 ),
                 keyboardType: TextInputType.emailAddress,
               ));
-        },
-      );
 
-  Widget _password(BuildContext context) =>
-      StreamBuilder(
-          stream: LoginServiceProvider.of(context).loginService.passwordStream,
-          builder: (context, snapshot) {
-            return Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextField(
-                onChanged: LoginServiceProvider.of(context).loginService.changePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  labelText: "Password",
-                  errorText: snapshot.hasError
-                      ? snapshot.error.toString()
-                      : null,
-                ),
-              ),
-            );
-          });
+  Widget _password(BuildContext context, B.FormState state) =>Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: TextField(
+      onChanged:context.watch<B.FormBloc>().changePassword,
+      obscureText: true,
+      decoration: InputDecoration(
+        hintText: "Password",
+        labelText: "Password",
+        errorText: !state.validPassword
+            ? 'Password non valida'
+            : null,
+      ),
+    ),
+  );
 
-  Widget _loginButton(BuildContext context) =>
-      StreamBuilder(
-          stream: LoginServiceProvider.of(context).loginService.loginButtonStream,
-          builder: (context, snapshot) {
-            return TextButton(
-                onPressed: snapshot.data == true ? () {} : null,
-                child: Text("Login"));
-          });
+  Widget _loginButton(BuildContext context, B.FormState state) =>TextButton(
+      onPressed: state.validForm == true ? () {} : null,
+      child: Text("Login"));
 
 
 }

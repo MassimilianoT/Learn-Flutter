@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_learn/blocs/form_bloc.dart';
 import 'package:login_learn/pages/my_home_page.dart';
-import 'package:login_learn/providers/login_service_provider.dart';
-import 'package:login_learn/services/login_service.dart';
 
 class App extends StatelessWidget{
   Widget build(BuildContext context) {
-    return LoginServiceProvider(
-      LoginService(),
+    return BlocProvider(
+      create: (_)=> FormBloc(),
+      lazy: false, //Inizializzato subito
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
