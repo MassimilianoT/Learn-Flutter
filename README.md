@@ -1,6 +1,6 @@
 # login_learn
 
-A new Flutter project.
+Il main branch di questa repo insegna come sviluppare correttamente usando il pattern BLOC una app con Form 
 
 ## Getting Started
 
