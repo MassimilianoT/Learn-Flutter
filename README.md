@@ -8,7 +8,7 @@ Questo branch della repo '**Learn Flutter**' creata appositamente come strumento
 - - -
 
 
-Come nota ai fruitori attualmente il package <i>flutter_cubit</i> non supporta la null-safety e quindi non è adatto ad un uso su Flutter 2 -> il package <i>flutter_bloc</i> invece dalla versione 7.1.0, si suggerisce quindi di usare quest'ultimo.
+Come nota ai fruitori attualmente il package <i>flutter_cubit</i> non supporta la null-safety e quindi non è adatto ad un uso su Flutter 2 -> il package  [<i>flutter_bloc</i>](https://pub.dev/packages/flutter_bloc) invece dalla versione 7.1.0, si suggerisce quindi di usare quest'ultimo.
 
 
 ## Esempio di utilizzo
@@ -21,6 +21,8 @@ class CounterCubit extends Cubit<int> {
   void increment() => emit(state + 1);
 }
 ```
+Si noti che in questo caso il cubit è tipizzato con un intero, si possono tuttavia usare anche altre classi e la situazione risulta più complessa (Esplorare altri rami di questa repository per approfondimenti).
+
 Dopo aver definito la classe si utilizza un *BlocProvider* per fornire a tutti i widget al di sotto di esso un accesso al Cubit (Cubit è un sottotipo di Bloc). 
 ```dart
 return BlocProvider(
