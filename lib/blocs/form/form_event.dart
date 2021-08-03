@@ -21,6 +21,5 @@ class PasswordChangedEvent extends FormEvent{
   PasswordChangedEvent(this.password);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [password];
 }
