@@ -1,16 +1,7 @@
-# login_learn
+# Learn Flutter
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Questo branch della repo '**Learn Flutter**' creata appositamente come strumento didattico per l'IEEE Student Branch dell'Università degli studi di Brescia reinterpreta la app di default di flutter usando l'approccio Cubit.
+<p align="center" width="100%">
+    <img width="33%" src="https://user-images.githubusercontent.com/49036204/127985029-6b59f370-2726-4504-9ba1-c6b057d8b5e0.png">
+</p>
+Come nota ai fruitori attualmente il package *flutter_cubit* non supporta la null-safety e quindi non è adatto ad un uso su Flutter 2 -> il package *flutter_bloc* invece dalla versione 7.1.0
