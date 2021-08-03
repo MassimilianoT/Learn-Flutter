@@ -19,7 +19,6 @@ class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
   void increment() => emit(state + 1);
-  void decrement() => emit(state - 1);
 }
 ```
 Dopo aver definito la classe si utilizza un *BlocProvider* per fornire a tutti i widget al di sotto di esso un accesso al Cubit (Cubit è un sottotipo di Bloc). 
