@@ -58,6 +58,7 @@ class LoginPage extends StatelessWidget {
           decoration: InputDecoration(
             hintText: "Password",
             labelText: "Password",
+
             errorText: !state.validPassword ? 'Password non valida' : null,
           ),
         ),
