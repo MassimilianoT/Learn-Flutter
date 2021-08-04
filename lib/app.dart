@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_learn/cubits/counter_cubit.dart';
+import 'package:login_learn/misc/app_router.dart';
 import 'package:login_learn/pages/hello_page.dart';
 
 class App extends StatelessWidget {
@@ -14,6 +15,8 @@ class App extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             primarySwatch: Colors.blue),
         home: HelloPage(),
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRouter.MAIN,
       ),
     );
   }

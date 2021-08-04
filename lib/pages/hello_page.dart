@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_learn/cubits/counter_cubit.dart';
+import 'package:login_learn/dto/second_page_arguments_dto.dart';
+import 'package:login_learn/misc/app_router.dart';
 import 'package:login_learn/pages/second_page.dart';
 
 class HelloPage extends StatelessWidget {
@@ -18,10 +20,10 @@ class HelloPage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             //Approccio standard con le route create sul momento
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => SecondPage(name: "Massi"),
-              ),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              AppRouter.SECOND_PAGE,
+              arguments: SecondPageArgumentsDTO(name: "Massi"),
             ),
             //onPressed: () => context.read<CounterCubit>().increment(),
           )),
