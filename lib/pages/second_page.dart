@@ -10,7 +10,12 @@ class SecondPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Second page"),),
       body: Center(
-        child: Text("Hello $name"),
+        child: Column(
+          children: [
+            Text("Hello $name"),
+            TextButton(onPressed: ()=>Navigator.pop(context), child: Text("Esci"))
+          ],
+        ),
       ),
     );
   }
